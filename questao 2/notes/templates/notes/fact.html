@@ -1,0 +1,30 @@
+{% extends "notes/base.html" %}
+{% load static %}
+{% block content %}
+<div class="appbar">
+    <img src="{% static 'notes/img/logo-getit.png' %}" class="logo" />
+    <span class="subtitle">Como o Post-it, mas com outro verbo</span>
+</div>
+
+<main class="container">
+    <form class="form-card" method="post">
+        {% csrf_token %}
+        <textarea name="description" class="autoresize" placeholder="Insira um fato interessante..."></textarea>
+        <button class="btn" type="submit">Criar</button>
+    </form>
+
+    <h3>Tem {{ qntd }} fato(s)</h3>
+
+    {% for fact in facts %}
+        <div class="card tags">
+            <a href="like/{{ fact.description }}" class="deledit-btn" method="post"><img src="{% static 'notes/img/like.png' %}" class="icone"/></a>
+            <div class="card-content"><p>{{ fact.description }}</p></div>
+            <div class="card-tag"><p>{{ fact.likes }}</p></div>
+        </div>
+    {% empty %}
+        <div class="card tags">
+            <div class="card-content"><p>Não há nenhum fato interessante cadastrado.</p></div>
+        </div>
+    {% endfor %}
+</main>
+{% endblock %}
